@@ -1,0 +1,27 @@
+<story-type>(short-title): <description>
+
+<bullet-listed-commit-body>
+
+[<status>]
+
+#
+#
+# <story-type> can be either of:
+#  - feat for Features
+#  - chore for Chores
+#  - bug for bug fixes
+#
+#  <status> can be either of
+#  - Completes for completed features and bugs
+#  - Maintains for completed features and bugs
+#  - Started for tasks that have just been started
+#
+# Example:
+#
+# feat(auth): user sign up:
+#
+# - adds sign up route to the app
+# - installs pyjwt package
+#
+#
+# [Started]
