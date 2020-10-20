@@ -17,8 +17,28 @@ export class User extends Model {
 
 module.exports = (sequelize) => {
   User.init({
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      }
+    },
   }, {
     sequelize,
     modelName: 'User',
