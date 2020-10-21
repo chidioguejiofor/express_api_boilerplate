@@ -1,5 +1,5 @@
-import 'dotenv/config';
-import server from './app';
+import "dotenv/config";
+import server from "./app";
 
 const PORT = 3000;
 
