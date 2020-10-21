@@ -1,2 +1,2 @@
 database/
-src/models/
+src/models/**/*.js
