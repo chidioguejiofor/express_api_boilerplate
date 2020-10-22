@@ -18,6 +18,14 @@ export abstract class BaseValidator {
     this.excludeFieldsThatAreNotInSchema = excludeFieldsThatAreNotInSchema;
   }
 
+  protected transformInputData(
+    key: string,
+    value: unknown,
+    data: Record<string, unknown>
+  ) {
+    return value;
+  }
+
   public excludeUnknownFields(
     data: Record<string, unknown>
   ): Record<string, unknown> {
@@ -31,7 +39,13 @@ export abstract class BaseValidator {
     return finalResult;
   }
 
-  public validate(data: Record<string, any>) {
+  public validate(inputData: Record<string, any>) {
+    const data = inputData;
+
+    Object.entries(inputData).forEach(([key, value]) => {
+      data[key] = this.transformInputData(key, value, inputData);
+    });
+
     const validation = new Validator(data, this.SCHEMA);
     if (validation.fails()) {
       return [false, validation.errors];
@@ -45,7 +59,7 @@ export abstract class BaseValidator {
     res: Response,
     next: NextFunction
   ): void | Response<unknown> => {
-    let data;
+    let data = req.body;
     if (this.validateDataFrom === "body") {
       data = req.body;
     }

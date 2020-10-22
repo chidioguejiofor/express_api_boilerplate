@@ -3,7 +3,6 @@ import { User as UserType } from "../models/user";
 import db from "../models";
 import { sequelizeErrorHandler } from "../utils/errorHandlers";
 import { RequestType } from "global";
-
 const { User } = db;
 
 export class AuthController {
@@ -11,13 +10,17 @@ export class AuthController {
     let user: UserType;
 
     try {
-      user = await User.create(req.data);
+      user = await User.create({
+        ...req.data,
+        password: await User.generateHash(req.data.password),
+      });
       return res.json({
         message: "Registering the user",
         data: user,
       });
     } catch (error) {
-      return res.json(sequelizeErrorHandler(error));
+      const [resJson, statusCode] = sequelizeErrorHandler(error);
+      return res.status(statusCode).json(resJson);
     }
   }
 }
