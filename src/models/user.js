@@ -15,8 +15,8 @@ export class User extends Model {
         return bcrypt.hash(password, bcrypt.genSaltSync(8));
     }
 
-    static validPassword(password) {
-        return bcrypt.compare(password, this.password);
+    static isPasswordValid(password, hashedPassword) {
+        return bcrypt.compare(password, hashedPassword);
     }
 
   static associate(models) {
@@ -47,6 +47,11 @@ module.exports = (sequelize) => {
       validate: {
         isEmail: true,
       }
+    },
+    emailVerfied: {
+      type: Sequelize.DataTypes,
+      allowNull: false,
+      defaultValue: false
     },
     dob: {
       type: DataTypes.DATEONLY,

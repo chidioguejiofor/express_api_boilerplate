@@ -1,6 +1,6 @@
 import { BaseValidator } from "./index";
 
-export class AuthValidator extends BaseValidator {
+export class RegisterValidator extends BaseValidator {
   SCHEMA = {
     email: "email|required",
     firstName: "required|max:50|min:1",
@@ -23,6 +23,14 @@ export class AuthValidator extends BaseValidator {
   }
 }
 
-const registerValidator = new AuthValidator("body");
+export class LoginValidator extends BaseValidator {
+  SCHEMA = {
+    email: "email|required",
+    password: "required|min:7",
+  };
+}
 
-export { registerValidator };
+const registerValidator = new RegisterValidator("body");
+const loginValidator = new LoginValidator("body");
+
+export { registerValidator, loginValidator };

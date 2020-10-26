@@ -1,5 +1,5 @@
 import { Application, Router } from "express";
-import { registerValidator } from "./validation/auth";
+import { registerValidator, loginValidator } from "./validation/auth";
 import { AuthController } from "./controllers/auth";
 
 export class Routes {
@@ -11,6 +11,9 @@ export class Routes {
       .route("/auth/register")
       .post(registerValidator.middleware, this.authController.register);
 
+    router
+      .route("/auth/login")
+      .post(loginValidator.middleware, this.authController.login);
     app.use("/api", router);
   }
 }
