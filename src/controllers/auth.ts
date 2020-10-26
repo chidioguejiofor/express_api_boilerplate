@@ -6,7 +6,11 @@ import { SendGridMailService } from "../services/EmailService";
 import { TokenValidator } from "../utils/TokenValidator";
 import { LOGIN_SUCCESS, REGISTER_SUCCESS } from "../utils/messages/success";
 import { format } from "util";
-import { INVALID_LINK, INVALID_RESET_ID, NOT_FOUND } from "../utils/messages/error";
+import {
+  INVALID_LINK,
+  INVALID_RESET_ID,
+  NOT_FOUND,
+} from "../utils/messages/error";
 import { RedisService } from "../services/cache";
 
 const User = db.User;
@@ -189,16 +193,14 @@ export class AuthController {
 
       if (!redisData) {
         return res.status(404).json({
-          message:
-          INVALID_RESET_ID,
+          message: INVALID_RESET_ID,
         });
       }
 
       const { email } = JSON.parse(redisData);
       if (!email) {
         return res.status(404).json({
-          message:
-          INVALID_RESET_ID,
+          message: INVALID_RESET_ID,
         });
       }
       const { password } = req.data;
