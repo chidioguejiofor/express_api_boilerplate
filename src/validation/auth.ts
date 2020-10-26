@@ -1,5 +1,6 @@
 import { BaseValidator } from "./index";
 
+const PASSWORD_VALIDATION = "required|min:7";
 export class RegisterValidator extends BaseValidator {
   SCHEMA = {
     email: "email|required",
@@ -10,7 +11,7 @@ export class RegisterValidator extends BaseValidator {
     callCode: "required|max:5|min:2",
     gender: "required|in:male,female",
     bvn: "",
-    password: "required|min:7",
+    password: PASSWORD_VALIDATION,
     redirectURL: "required|url",
   };
 
@@ -27,11 +28,34 @@ export class RegisterValidator extends BaseValidator {
 export class LoginValidator extends BaseValidator {
   SCHEMA = {
     email: "email|required",
-    password: "required|min:7",
+    password: PASSWORD_VALIDATION,
+  };
+}
+
+export class ForgotPasswordValidator extends BaseValidator {
+  SCHEMA = {
+    email: "email|required",
+    redirectURL: "required|url",
+  };
+}
+
+export class ChangeForgottenPasswordValidator extends BaseValidator {
+  SCHEMA = {
+    password: PASSWORD_VALIDATION,
+    resetId: "required|min:30",
   };
 }
 
 const registerValidator = new RegisterValidator("body");
 const loginValidator = new LoginValidator("body");
+const forgotPasswordValidator = new ForgotPasswordValidator("body");
+const changeForgottenPasswordValidator = new ChangeForgottenPasswordValidator(
+  "body"
+);
 
-export { registerValidator, loginValidator };
+export {
+  registerValidator,
+  loginValidator,
+  changeForgottenPasswordValidator,
+  forgotPasswordValidator,
+};
