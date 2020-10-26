@@ -13,8 +13,8 @@ export const sequelizeErrorHandler = (error: {
   });
 
   if (!parsedErrros) {
-    console.log(error);
-    console.log(error.errors);
+    console.error(error);
+    console.error(error.errors);
   }
 
   return [

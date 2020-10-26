@@ -48,8 +48,8 @@ module.exports = (sequelize) => {
         isEmail: true,
       }
     },
-    emailVerfied: {
-      type: Sequelize.DataTypes,
+    emailVerified: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
     },

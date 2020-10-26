@@ -11,6 +11,7 @@ export class RegisterValidator extends BaseValidator {
     gender: "required|in:male,female",
     bvn: "",
     password: "required|min:7",
+    redirectURL: "required|url",
   };
 
   protected transformInputData(

@@ -25,7 +25,6 @@ export class SendGridMailService extends BaseEmailService {
   }
 
   public sendEmail = async (to: string | string[]): Promise<boolean> => {
-    console.log(process.env.SENDGRID_API_KEY);
     this.SG_SERVICE.setApiKey(process.env.SENDGRID_API_KEY);
 
     const msg = {

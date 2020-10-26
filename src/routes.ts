@@ -14,6 +14,10 @@ export class Routes {
     router
       .route("/auth/login")
       .post(loginValidator.middleware, this.authController.login);
+
+    router
+      .route("/auth/confirm-email/:id")
+      .get(this.authController.confirmEmail);
     app.use("/api", router);
   }
 }
