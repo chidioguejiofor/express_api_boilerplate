@@ -4,7 +4,7 @@ const uuid = require("uuid");
 
 const uuidGenerator = uuid.v4;
 
-const REDIS_CLIENT = redis.createClient(process.env.REDIS_HOST);
+const REDIS_CLIENT = redis.createClient(process.env.REDIS_SERVER_URL);
 export class RedisService {
   static cacheVerificationEmail(
     verificationType: "REGISTER" | "FORGOT_PASSWORD",
