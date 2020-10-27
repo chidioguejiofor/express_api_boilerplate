@@ -1,0 +1,6 @@
+{
+    "all": true,
+    "extension": [ ".ts"],
+    "reporter": ["clover", "html", "text", "lcov", "json"],
+    "include": ["src/**/*"]
+}

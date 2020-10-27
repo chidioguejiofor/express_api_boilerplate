@@ -8,6 +8,7 @@
     "start": "npm run build && node ./dist/index.js",
     "lint": "rm -rf dist && tsc --noEmit  && eslint \"./src/**/*.{js,ts}\" --quiet --fix",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
+    "coverage": "nyc  -t coverage npm run test",
     "build": "tsc"
   },
   "repository": {
@@ -51,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.2.14",
     "@types/cors": "^2.8.8",
     "@types/express": "^4.17.8",
@@ -67,6 +69,7 @@
     "lint-staged": "^10.4.2",
     "mocha": "^8.2.0",
     "nodemon": "^2.0.5",
+    "nyc": "^15.1.0",
     "prettier": "^2.1.2",
     "sequelize-cli": "^6.2.0",
     "ts-node": "^9.0.0",
