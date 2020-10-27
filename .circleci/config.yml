@@ -1,7 +1,116 @@
-version: 2.1
+version: 2 # use CircleCI 2.0
+
 orbs:
-  node: circleci/node@3.0.0
+  codecov: codecov/codecov@1.0.2
+
+docker_setup: &docker_setup
+  docker: # run the steps with Docker
+    # CircleCI Python images available at: https://hub.docker.com/r/circleci/python/
+    - image: circleci/node@12.16.1
+      environment: # environment variables for primary container
+        TEST_DATABASE_URL: "postgresql://test-user:password@localhost:5432/testing_db"
+        JWT_SECRET: $JWT_SECRET
+        CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID
+        PG_HOST: localhost
+        PG_USER: test-user
+    - image: circleci/postgres
+      environment:
+        POSTGRES_USER: test-user
+        POSTGRES_DB: testing_db
+        POSTGRES_PASSWORD: password
+
+restore_cache: &run_restore_cache
+  restore_cache:
+    # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+    keys:
+      - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - node-v1-{{ .Branch }}-
+      - node-v1-
+
+install_dependencies: &install_dependencies
+  name: Install Dependencies
+  command: |
+    npm install 
+
+save_cache: &save_cache # cache Python dependencies using checksum of Pipfile as the cache-key
+  paths:
+    - ~/usr/local/lib/node_modules  # location depends on npm version
+  key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+
+
+run_tests: &run_tests
+  name: Run tests
+  command: |
+    npm run test
+
+generate_coverage_report: &generate_coverage_report
+  name: 'Upload coverage report'
+  command:
+    codecov/upload:
+      file: coverage.xml
+
+
+jobs: # A basic unit of work in a run
+  build:
+    <<: *docker_setup
+    working_directory: ~/repo
+    steps: # steps that comprise the `build` job
+      - checkout # check out source code to working directory
+      - *run_restore_cache
+      - run: *install_dependencies
+      - save_cache: *save_cache
+
+  run_test_and_upload_coverage:
+    <<: *docker_setup
+    working_directory: ~/repo-test-dir
+    steps:
+      - checkout
+      - *run_restore_cache
+      - run: *install_dependencies
+      - run: *run_tests
+      - save_cache: *save_cache
+      - run:
+          name: Upload Coverage
+          command: |
+            bash <(curl -s https://codecov.io/bash)
+
+  deploy:
+    <<: *docker_setup
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install Heroku and Login
+          command: |
+            env >> .env
+            # install heroku CLI
+            curl https://cli-assets.heroku.com/install.sh | sh
+            # login to heroku docker registry
+            heroku container:login
+            # Login to heroku registry
+            echo $HEROKU_API_KEY | docker login --username=$HEROKU_USERNAME --password-stdin registry.heroku.com
+
+      - run:
+          name: Build Dockerfile
+          command: |
+            docker build -t registry.heroku.com/$HEROKU_APP_NAME/web -f Docker/Dockerfile .
+            docker push registry.heroku.com/$HEROKU_APP_NAME/web
+      - run:
+          name: Deploy to heroku
+          command: |
+            heroku container:release web --app $HEROKU_APP_NAME
+
 workflows:
-  node-tests:
-    jobs:
-      - node/test
+  version: 2
+  run_test_and_send_coverage:
+      jobs:
+        - run_test_and_upload_coverage
+        - deploy:
+            requires:
+              - run_test_and_upload_coverage
+            filters:
+              branches:
+                only:
+                  - staging
+
+
