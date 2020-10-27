@@ -30,7 +30,7 @@ RUN useradd -r -u 1234 -U docker-user
 RUN chown -R docker-user:docker-user ./ && chmod 755 ./
 
 USER docker-user
-EXPOSE $PORT
+# EXPOSE $PORT
 
 CMD [ "sh", "scripts/start.sh" ]
 
