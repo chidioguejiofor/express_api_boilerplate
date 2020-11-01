@@ -21,10 +21,10 @@ export class RedisService {
     const deletedKeys = await RedisService.keys(pattern);
     const deletePromises = [];
     for (const deletedKey of deletedKeys) {
-       deletePromises.push(REDIS_CLIENT.del(deletedKey));
+      deletePromises.push(REDIS_CLIENT.del(deletedKey));
     }
 
-    return Promise.all(deletedKeys)
+    return Promise.all(deletedKeys);
   };
   static getCachedRegisterEmail = async (
     verificationType: "REGISTER" | "FORGOT_PASSWORD",

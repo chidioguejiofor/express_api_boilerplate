@@ -1,21 +1,14 @@
 /* eslint-disable */
 require('dotenv/config');
 
-const { parse } = require('pg-connection-string');
-
-const connectionObj = parse(process.env.DATABASE_URL);
-
 module.exports = {
   development: {
-    ...connectionObj,
-    dialect: 'postgres',
+    use_env_variable: "DATABASE_URL"
   },
   test: {
-    url: process.env.TEST_DATABASE_URL,
-    dialect: 'postgres',
+    use_env_variable: "TEST_DATABASE_URL"
   },
   production: {
-    ...connectionObj,
-    dialect: 'postgres',
+    use_env_variable: "DATABASE_URL"
   },
 };
