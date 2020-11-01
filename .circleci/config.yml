@@ -107,9 +107,9 @@ workflows:
         - deploy:
             requires:
               - run_test_and_upload_coverage
-            # filters:
-            #   branches:
-            #     only:
-            #       - staging
+            filters:
+              branches:
+                only:
+                  - staging
 
 
