@@ -4,9 +4,11 @@ import {
   loginValidator,
   forgotPasswordValidator,
   changeForgottenPasswordValidator,
+  loggedInUserChangePasswordValidator,
 } from "./validation/auth";
 import { AuthController } from "./controllers/auth";
 import cors from "cors";
+import { TokenValidator } from "./utils/TokenValidator";
 
 export class Routes {
   public static authController: AuthController = new AuthController();
@@ -56,6 +58,15 @@ export class Routes {
         this.authController.changeForgottenPassword
       );
 
+    allowSpecificHostsRouter
+      .route("/auth/change-password")
+      .post(
+        TokenValidator.protectRouteMiddleWare,
+        loggedInUserChangePasswordValidator.middleware,
+        this.authController.loggedInUserChangesPassword
+      );
+
+    // protectRouteMiddleWare
     app.use("/api", allowSpecificHostsRouter);
     app.use("/api", allowAllHostsRouter);
   }

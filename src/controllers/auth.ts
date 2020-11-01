@@ -11,7 +11,11 @@ import {
   INVALID_RESET_ID,
   NOT_FOUND,
 } from "../utils/messages/error";
-import { RedisService } from "../services/cache";
+import { RedisService, uuidGenerator } from "../services/cache";
+import {
+  LOGIN_TOKEN_AGE,
+  REDIS_LOGIN_TOKEN_CACHE_KEY,
+} from "../utils/constants";
 
 const User = db.User;
 
@@ -44,10 +48,15 @@ export class AuthController {
     };
 
     const { html, subject, link } = mapper[type];
-    const registerId = RedisService.cacheVerificationEmail(type, {
-      email,
-      redirectURL,
-    });
+    const verificationAge = 30 * 60 * 60; // 30 minutes
+    const registerId = RedisService.cacheVerificationEmail(
+      type,
+      {
+        email,
+        redirectURL,
+      },
+      verificationAge
+    );
 
     const confirmLink = format(link, registerId);
     const personaliseConfirmEmail = format(html, confirmLink);
@@ -96,16 +105,7 @@ export class AuthController {
         user && (await User.isPasswordValid(password, user["password"]));
 
       if (passwordIsValid) {
-        const data = {
-          ...user.dataValues,
-        };
-        delete data["password"];
-        const token = TokenValidator.createToken({ email }, "3d");
-        return res.json({
-          message: LOGIN_SUCCESS,
-          data,
-          token,
-        });
+        return this.handleLoginResponse(user, res, LOGIN_SUCCESS);
       }
     } catch (error) {
       const [resJson, statusCode] = sequelizeErrorHandler(error);
@@ -116,6 +116,30 @@ export class AuthController {
       message: format(NOT_FOUND, "Credentials"),
     });
   }
+
+  private handleLoginResponse = (
+    user: any,
+    res: Response<any>,
+    message: string
+  ) => {
+    const { email } = user;
+    const data = {
+      ...user.dataValues,
+    };
+    delete data["password"];
+    const token = TokenValidator.createToken({ email, id: user.id }, "3d");
+
+    const uniqueId = uuidGenerator();
+    const loginKey = format(REDIS_LOGIN_TOKEN_CACHE_KEY, user.email, uniqueId);
+
+    RedisService.cacheData(loginKey, token, LOGIN_TOKEN_AGE);
+
+    return res.json({
+      message,
+      data,
+      token: uniqueId,
+    });
+  };
 
   public async confirmEmail(req: RequestType, res: Response): Promise<unknown> {
     const confirmEmailId = req.params.id;
@@ -222,5 +246,44 @@ export class AuthController {
       const [resJson, statusCode] = sequelizeErrorHandler(error);
       return res.status(statusCode).json(resJson);
     }
+  };
+
+  loggedInUserChangesPassword = async (req: RequestType, res: Response) => {
+    const { oldPassword, newPassword } = req.data;
+    const { email } = req.decoded;
+    const user = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    const passwordIsValid =
+      user && (await User.isPasswordValid(oldPassword, user["password"]));
+
+    if (!passwordIsValid) {
+      return res.status(400).json({
+        message: "Password is invalid",
+        errors: {
+          oldPassword: "Password is not correct",
+        },
+      });
+    }
+    await User.update(
+      {
+        password: await User.generateHash(newPassword),
+      },
+      {
+        where: {
+          email,
+        },
+      }
+    );
+
+    const message =
+      "Password was changed successfully. You may need to login again";
+    const userLoginKeys = format(REDIS_LOGIN_TOKEN_CACHE_KEY, user.email, "*");
+    RedisService.delete(userLoginKeys);
+
+    return this.handleLoginResponse(user, res, message);
   };
 }

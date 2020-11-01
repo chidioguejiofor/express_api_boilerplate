@@ -9,7 +9,7 @@
     "lint": "rm -rf dist && tsc --noEmit  && eslint \"./src/**/*.{js,ts}\" --quiet --fix",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
     "coverage": "nyc  -t coverage npm run test",
-    "build": "tsc"
+    "build": "tsc && sequelize db:migrate"
   },
   "repository": {
     "type": "git",
