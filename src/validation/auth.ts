@@ -46,10 +46,20 @@ export class ChangeForgottenPasswordValidator extends BaseValidator {
   };
 }
 
+class LoggedInUserChangePasswordValidator extends BaseValidator {
+  SCHEMA = {
+    oldPassword: PASSWORD_VALIDATION,
+    newPassword: PASSWORD_VALIDATION,
+  };
+}
+
 const registerValidator = new RegisterValidator("body");
 const loginValidator = new LoginValidator("body");
 const forgotPasswordValidator = new ForgotPasswordValidator("body");
 const changeForgottenPasswordValidator = new ChangeForgottenPasswordValidator(
+  "body"
+);
+const loggedInUserChangePasswordValidator = new LoggedInUserChangePasswordValidator(
   "body"
 );
 
@@ -58,4 +68,5 @@ export {
   loginValidator,
   changeForgottenPasswordValidator,
   forgotPasswordValidator,
+  loggedInUserChangePasswordValidator,
 };

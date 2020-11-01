@@ -1,2 +1,5 @@
 import { Request } from "express";
-export type RequestType = Request & { data: Record<string, any> };
+export type RequestType = Request & {
+  decoded: Record<string, any>;
+  data: Record<string, any>;
+};
