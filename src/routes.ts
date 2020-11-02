@@ -27,7 +27,7 @@ export class Routes {
 
     allowSpecificHostsRouter.use(
       cors({
-        origin: ["http://localhost:3001"], // this changes based on the project,
+        origin: ["http://localhost:3000", "https://syca-49bfe.web.app"], // this changes based on the project,
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
       })
     );
