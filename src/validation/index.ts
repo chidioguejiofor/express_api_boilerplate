@@ -70,7 +70,7 @@ export abstract class BaseValidator {
       return next();
     }
 
-    return res.json({
+    return res.status(400).json({
       message: "There was an error while validating data",
       errors: result.errors,
     });
