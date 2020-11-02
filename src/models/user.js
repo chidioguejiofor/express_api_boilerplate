@@ -61,7 +61,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    callCode: {
+    phoneNumber: {
       type: DataTypes.STRING,
       allowNull: false,
     },

@@ -8,9 +8,9 @@ export class RegisterValidator extends BaseValidator {
     lastName: "required|max:50|min:1",
     dob: "required|date",
     location: "required",
-    callCode: "required|max:5|min:2",
+    phoneNumber: "required",
     gender: "required|in:male,female",
-    bvn: "",
+    bvn: "sometimes|min:5",
     password: PASSWORD_VALIDATION,
     redirectURL: "required|url",
   };
