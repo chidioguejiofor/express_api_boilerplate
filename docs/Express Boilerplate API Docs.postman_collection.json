@@ -1,0 +1,457 @@
+{
+	"info": {
+		"_postman_id": "60b585b6-9121-4d5e-bfd3-65f172e54f14",
+		"name": "Express Boilerplate API Docs",
+		"description": "This is an API documentation for the [express-api-boilerplate](https://github.com/chidioguejiofor/express_api_boilerplate) built by [chidioguejiofor](https://github.com/chidioguejiofor/express_api_boilerplate).\n\n\n### Conventions\n\nThe API uses some conventions for sending success and error response. \n\n##### Success\n\nOn success this API would return:\n\n```json\n{\n    \"data\": \"always|type:object,array\",\n    \"message\": \"always|type:string\",\n    \"paginationMeta\": \"optional|object\" \n}\n\n```\n\nYou should always expect data being returned in all successful responses.\n\n\n##### Error\n\nOn error this API would return:\n\n```json\n{\n    \"message\": \"always|type:string\",\n    \"errors\": \"optional|type:array,object\"\n}\n```\n\nThe `errors` key would be an objec only when there are key specific errors . For example, Imagin we had a POST request that sends data in the form:\n\n```json\n{\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n}\n```\n\nWhen there are key-specific errors, the API would return:\n```json\n{\n   \"errors\": {\n        \"key1\": [\n            \"message1\", \"message2\", ...,\"messageN\"\n        ],\n        \"key2\": [\n             \"message1\", \"message2\", ...,\"messageN\"\n        ]\n   }\n}\n```\n\nWhen there are no key-specific errors, the API returns: \n\n```json\n{\n    \"errors\": [\n        \"message1\", \"message2\", ...,\"messageN\"\n    ]\n}\n\n```\n\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"email1@gmail.com\",\n    \"firstName\": \"firstName\",\n    \"lastName\": \"lastName\",\n    \"password\": \"password\",\n    \"redirectURL\":\"http://google.com\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/auth/register",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "This endpoint is used to register the user into the application. \n\nNote that the `redirectURL` is the link to the consumer's application where the user would be redirected to once his password is confirmed"
+					},
+					"response": [
+						{
+							"name": "Email already exists",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"email1@gmail.com\",\n    \"firstName\": \"firstName\",\n    \"lastName\": \"lastName\",\n    \"password\": \"password\",\n    \"redirectURL\":\"http://google.com\" \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base-url}}/auth/register",
+									"host": [
+										"{{base-url}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "85"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"55-nMKejTW9iPpPLAu1fE1Fpi7NWho\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Nov 2020 15:30:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"There was some errors in your request\",\n    \"errors\": [\n        \"email already exists\"\n    ]\n}"
+						},
+						{
+							"name": "MIssing required fields",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base-url}}/auth/register",
+									"host": [
+										"{{base-url}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "302"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"12e-0wDulhqsad5/hgd4RA+UBQiM3yY\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Nov 2020 15:29:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"There was an error while validating data\",\n    \"errors\": {\n        \"email\": [\n            \"The email field is required.\"\n        ],\n        \"firstName\": [\n            \"The firstName field is required.\"\n        ],\n        \"lastName\": [\n            \"The lastName field is required.\"\n        ],\n        \"password\": [\n            \"The password field is required.\"\n        ],\n        \"redirectURL\": [\n            \"The redirectURL field is required.\"\n        ]\n    }\n}"
+						},
+						{
+							"name": "Registration Successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"chidioguejiofor@gmail.com\",\n    \"firstName\": \"firstName\",\n    \"lastName\": \"lastName\",\n    \"password\": \"password\",\n    \"redirectURL\":\"http://google.com\" \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base-url}}/auth/register",
+									"host": [
+										"{{base-url}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "404"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"194-IZWUDBa/12RLT6X1/7QyQLo75WU\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 26 Oct 2020 13:25:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Registration successful. Please check your email for confirmation link\",\n    \"data\": {\n        \"id\": \"dfeee493-e00d-4677-97fa-0ee5ae634b39\",\n        \"emailVerified\": false,\n        \"email\": \"email@gmail.com\",\n        \"firstName\": \"firstName\",\n        \"lastName\": \"lastName\",\n        \"updatedAt\": \"2020-10-26T13:25:42.896Z\",\n        \"createdAt\": \"2020-10-26T13:25:42.896Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chidioguejiofor@gmail.com\",\n    \"password\": \"password1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/auth/login",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "This endpoint logs the user into the application. \n\nNote that this application sends a `token` on success. This `token` has to be sent back to the API in order to access a protected endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chidioguejiofor@gmail.com\",\n    \"redirectURL\": \"http://google.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/auth/forgot-password",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						},
+						"description": "The user hits this endpoint in order to reset his password. Users reset their passwords by following these steps:\n\n1. Journey begins by hitting this endpoint providing both `email` and `redirectURL`. \n2. On success an email is sent to the user with a reset link `{redirectURL}/{reset-id}`\n3. Once clicked the frontend should have access to the reset-id( this would be used in the `Reset Password` section).\n\nNote that the `redirectURL` should point to a route in the consumer's application where he can provide a new password that would be changed.\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resetId\": \"f17e3190-55a7-4ba6-a2a3-fbed2c89c699\",\n    \"password\": \"password1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/auth/forgot-password/confirm",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password",
+								"confirm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logged In User Changes Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "6798dd3d-b866-4bac-a520-81670a96a936",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/auth/change-password",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "When fields are missing",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base-url}}/auth/change-password",
+									"host": [
+										"{{base-url}}"
+									],
+									"path": [
+										"auth",
+										"change-password"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "171"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ab-cAzqDjAVQ2X9z+ayxbariNVJ14g\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 01 Nov 2020 12:53:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"There was an error while validating data\",\n    \"errors\": {\n        \"oldPassword\": [\n            \"The oldPassword field is required.\"\n        ],\n        \"newPassword\": [\n            \"The newPassword field is required.\"\n        ]\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "This contains all the authentication endpionts. \nAll these endpoints begin with `/api/auth`.\n\n",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7b1c0e8c-3484-44eb-a391-d1902d52ca62",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9f20ec28-a208-4df7-a07f-852ea5712a88",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "97dfb8ec-a0a3-4aa4-9c5e-34464df8edc2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "da682101-389f-4f6b-9913-805bfb5576f0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -53,30 +53,12 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: false
     },
-    dob: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-    },
-    location: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    phoneNumber: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    gender: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    bvn: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
+    
+   
 
   }, {
     sequelize,

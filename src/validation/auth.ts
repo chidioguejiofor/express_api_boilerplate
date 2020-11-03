@@ -6,11 +6,6 @@ export class RegisterValidator extends BaseValidator {
     email: "email|required",
     firstName: "required|max:50|min:1",
     lastName: "required|max:50|min:1",
-    dob: "required|date",
-    location: "required",
-    phoneNumber: "required",
-    gender: "required|in:male,female",
-    bvn: "sometimes|min:5",
     password: PASSWORD_VALIDATION,
     redirectURL: "required|url",
   };

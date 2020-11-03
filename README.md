@@ -55,3 +55,18 @@ OR
 ```bash
  docker stop <container name>
 ```
+
+
+### Documentation
+
+This boilerplate handles all the authentication-related endpoints including:
+- Login
+- Register
+- Reset Password
+- Forgot Password
+
+You can access the documentation of these endpoints in this [Postman Documentation](https://documenter.getpostman.com/view/4208573/TVYGcy7v) or download run in  [![this collection](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/b823ff20b7bde97333b4#?env%5BHeroku%5D=W3sia2V5IjoiYmFzZS11cmwiLCJ2YWx1ZSI6ImxvY2FsaG9zdDozMDAwL2FwaSIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoicmVzZXQtaWQiLCJ2YWx1ZSI6IjY3ZWI0N2M3LWFlYTMtNGYxZC1hOGRmLWIyZjZlODIyZDYzZCIsImVuYWJsZWQiOnRydWV9XQ==)
+
+
+You may also decide to download the docs from the docs folder in the repository.
+
